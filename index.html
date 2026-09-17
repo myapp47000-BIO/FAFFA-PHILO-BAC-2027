@@ -2,400 +2,337 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#1a1a2e">
-    <meta name="description" content="تطبيق تعليمي شامل لمادة الفلسفة - السنة الثالثة ثانوي شعبة آداب و فلسفة">
+    <meta name="description" content="تطبيق تعليمي للفلسفة - السنة 3 ثانوي">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>تعلم الفلسفة مع فافا</title>
+    <title>فافا - تعليم الفلسفة</title>
     <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--pri:#667eea;--pri2:#764ba2;--bg:#f7fafc;--card:#fff;--text:#1a202c;--text2:#4a5568;--text3:#718096;--border:#e2e8f0;--radius:12px;--shadow:0 2px 10px rgba(0,0,0,.08)}
+        [data-theme="dark"]{--bg:#0f0f23;--card:#1a1a2e;--text:#e2e8f0;--text2:#cbd5e0;--text3:#a0aec0;--border:#2d3748}
+        body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+        a{text-decoration:none;color:inherit}
+        button{font-family:inherit;cursor:pointer;border:none;background:none}
+        ul{list-style:none}
+        .hidden{display:none!important}
+        
+
+        
+        /* Header */
+        .header{position:fixed;top:0;left:0;right:0;height:56px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:100;backdrop-filter:blur(10px)}
+        .logo{display:flex;align-items:center;gap:8px;font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,var(--pri),var(--pri2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .header-btns{display:flex;gap:8px}
+        .header-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;color:var(--text2)}
+        .header-btn svg{width:20px;height:20px}
+        
+        /* Menu */
+        .menu-btn{display:flex;flex-direction:column;gap:4px;padding:8px}
+        .menu-btn span{width:20px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+        .menu-btn.active span:nth-child(1){transform:translateY(6px)rotate(45deg)}
+        .menu-btn.active span:nth-child(2){opacity:0}
+        .menu-btn.active span:nth-child(3){transform:translateY(-6px)rotate(-45deg)}
+        
+        /* Sidebar */
+        .sidebar{position:fixed;top:56px;right:0;width:260px;height:calc(100vh - 56px);background:var(--card);border-left:1px solid var(--border);z-index:90;transform:translateX(100%);transition:.3s;overflow-y:auto}
+        .sidebar.open{transform:translateX(0)}
+        .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:89;opacity:0;pointer-events:none;transition:.3s}
+        .sidebar-overlay.show{opacity:1;pointer-events:auto}
+        .nav-item{display:flex;align-items:center;gap:12px;padding:14px 20px;color:var(--text2);font-weight:500;transition:.2s;border-right:3px solid transparent}
+        .nav-item:hover,.nav-item.active{background:rgba(102,126,234,.1);color:var(--pri);border-right-color:var(--pri)}
+        .nav-item svg{width:20px;height:20px}
+        .sidebar-footer{padding:16px 20px;border-top:1px solid var(--border);margin-top:auto}
+        .install-btn-sidebar{width:100%;padding:12px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:var(--radius);font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+        .install-btn-sidebar svg{width:18px;height:18px}
+        
+        /* Main */
+        .main{margin-top:56px;padding:16px;padding-bottom:80px;min-height:calc(100vh - 56px)}
+        .section{display:none}
+        .section.active{display:block;animation:fadeIn .3s}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        
+        /* Hero */
+        .hero{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:var(--radius);padding:32px 20px;color:#fff;margin-bottom:24px;text-align:center}
+        .hero h1{font-size:1.6rem;margin-bottom:8px}
+        .hero h1 span{display:block;background:linear-gradient(135deg,var(--pri),var(--pri2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hero p{color:#a0aec0;font-size:.9rem;margin-bottom:20px}
+        .stats{display:flex;justify-content:center;gap:24px}
+        .stat{text-align:center}
+        .stat-num{display:block;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--pri),var(--pri2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:.8rem;color:#a0aec0}
+        
+        /* Cards */
+        .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .card{background:var(--card);border-radius:var(--radius);padding:20px 16px;text-align:center;border:1px solid var(--border);transition:.2s;cursor:pointer}
+        .card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+        .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+        .card h3{font-size:.9rem;font-weight:700;margin-bottom:4px}
+        .card p{font-size:.75rem;color:var(--text3)}
+        .c1{background:linear-gradient(135deg,var(--pri),var(--pri2))}
+        .c2{background:linear-gradient(135deg,#f6ad55,#ed8936)}
+        .c3{background:linear-gradient(135deg,#fc8181,#f56565)}
+        .c4{background:linear-gradient(135deg,#48bb78,#38a169)}
+        .c5{background:linear-gradient(135deg,#fc8181,#e53e3e)}
+        
+        /* Section Header */
+        .sec-head{text-align:center;margin-bottom:24px}
+        .sec-head h1{font-size:1.4rem;font-weight:800;margin-bottom:4px}
+        .sec-head p{font-size:.9rem;color:var(--text3)}
+        
+        /* Tabs */
+        .tabs{display:flex;gap:8px;margin-bottom:20px;justify-content:center}
+        .tab{padding:8px 20px;border-radius:20px;font-weight:600;font-size:.85rem;color:var(--text2);background:var(--border);transition:.2s}
+        .tab.active{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+        
+        /* Lesson */
+        .lesson{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:12px;overflow:hidden}
+        .lesson-head{padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+        .lesson-num{width:40px;height:40px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+        .lesson-info{flex:1}
+        .lesson-title{font-weight:700;font-size:.95rem}
+        .lesson-sub{font-size:.8rem;color:var(--text3)}
+        .lesson-arrow{transition:.3s;font-size:12px}
+        .lesson.open .lesson-arrow{transform:rotate(180deg)}
+        .lesson-body{max-height:0;overflow:hidden;transition:.4s}
+        .lesson.open .lesson-body{max-height:2000px}
+        .lesson-content{padding:0 16px 16px;border-top:1px solid var(--border)}
+        .lesson-content h4{color:var(--pri);font-weight:700;margin:16px 0 8px;font-size:.95rem}
+        .lesson-content h4:first-child{margin-top:0}
+        .lesson-content p{color:var(--text2);font-size:.9rem;line-height:1.8;margin-bottom:8px}
+        .lesson-content ul{padding-right:16px;margin-bottom:8px}
+        .lesson-content li{color:var(--text2);font-size:.9rem;margin-bottom:4px;list-style:disc}
+        .lesson-btn{width:100%;padding:10px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:8px;font-weight:600;margin-top:12px}
+        
+        /* Exam */
+        .exam{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:12px;overflow:hidden}
+        .exam-head{padding:16px;background:linear-gradient(135deg,#f6ad55,#ed8936);color:#fff;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+        .exam-year{width:40px;height:40px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}
+        .exam-title{font-weight:700;font-size:.9rem}
+        .exam-body{max-height:0;overflow:hidden;transition:.4s}
+        .exam.open .exam-body{max-height:3000px}
+        .exam-content{padding:16px}
+        .exam-sol{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:8px;margin-bottom:16px;font-weight:600;font-size:.85rem}
+        .exam-q{background:var(--bg);border-radius:8px;padding:14px;margin-bottom:10px;border-right:3px solid var(--pri)}
+        .exam-q:last-child{margin-bottom:0}
+        .exam-q-num{font-weight:700;color:var(--pri);margin-bottom:6px;font-size:.85rem}
+        .exam-q-text{font-weight:600;font-size:.9rem;margin-bottom:8px}
+        .exam-q-ans{color:var(--text2);font-size:.85rem;line-height:1.8;white-space:pre-line}
+        
+        /* Quiz */
+        .quiz-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .quiz-card{background:var(--card);border-radius:var(--radius);padding:16px;text-align:center;border:2px solid var(--border);cursor:pointer;transition:.2s}
+        .quiz-card:hover{border-color:var(--pri);transform:translateY(-2px)}
+        .quiz-card .lesson-num{margin:0 auto 10px}
+        .quiz-card h3{font-size:.85rem;font-weight:700;margin-bottom:4px}
+        .quiz-card p{font-size:.75rem;color:var(--text3)}
+        .quiz-header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px}
+        .quiz-info{font-weight:600;font-size:.85rem}
+        .quiz-timer{display:flex;align-items:center;gap:6px;color:var(--pri);font-weight:600;font-size:.85rem}
+        .quiz-q{background:var(--card);border-radius:var(--radius);padding:20px;border:1px solid var(--border);margin-bottom:16px}
+        .quiz-q-text{font-weight:700;font-size:1rem;margin-bottom:16px;line-height:1.7}
+        .quiz-opts{display:flex;flex-direction:column;gap:10px}
+        .quiz-opt{padding:12px;background:var(--bg);border:2px solid transparent;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:.2s}
+        .quiz-opt:hover{border-color:var(--pri)}
+        .quiz-opt.selected{border-color:var(--pri);background:rgba(102,126,234,.1)}
+        .quiz-opt.correct{border-color:#48bb78;background:rgba(72,187,120,.1)}
+        .quiz-opt.wrong{border-color:#fc8181;background:rgba(252,129,129,.1)}
+        .opt-letter{width:28px;height:28px;background:var(--card);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+        .quiz-opt.selected .opt-letter{background:var(--pri);color:#fff}
+        .quiz-nav{display:flex;gap:10px;justify-content:center}
+        .quiz-btn{padding:10px 24px;border-radius:20px;font-weight:600;font-size:.85rem;color:var(--text2);background:var(--border)}
+        .quiz-btn.primary{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+        .quiz-btn:disabled{opacity:.5}
+        
+        /* Result */
+        .result{text-align:center;padding:32px 20px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border)}
+        .result-score{font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--pri),var(--pri2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .result-title{font-size:1.3rem;font-weight:800;margin:8px 0 4px}
+        .result-desc{color:var(--text3);margin-bottom:16px}
+        .result-stats{display:flex;justify-content:center;gap:24px;margin-bottom:20px}
+        .result-stat{font-size:.9rem;font-weight:600}
+        .result-stat.ok{color:#48bb78}
+        .result-stat.no{color:#fc8181}
+        .result-actions{display:flex;gap:10px;justify-content:center}
+        .result-btn{padding:10px 24px;border-radius:20px;font-weight:600;background:var(--border);color:var(--text2)}
+        .result-btn.pri{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+        
+        /* YouTube */
+        .yt-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:16px;margin-bottom:12px}
+        .yt-icon{font-size:2rem;margin-bottom:8px}
+        .yt-name{font-weight:700;margin-bottom:4px}
+        .yt-desc{font-size:.85rem;color:var(--text3);margin-bottom:8px}
+        .yt-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+        .yt-tag{padding:4px 10px;background:var(--bg);border-radius:12px;font-size:.75rem;color:var(--text3)}
+        .yt-link{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:linear-gradient(135deg,#fc8181,#e53e3e);color:#fff;border-radius:8px;font-weight:600;font-size:.8rem}
+        
+        /* Bottom Nav */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+        .bottom-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text3);font-size:.7rem;font-weight:500}
+        .bottom-btn svg{width:22px;height:22px}
+        .bottom-btn.active{color:var(--pri)}
+        
+        /* Search */
+        .search-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-top:80px;backdrop-filter:blur(4px)}
+        .search-box{width:calc(100% - 32px);max-width:500px;background:var(--card);border-radius:var(--radius);overflow:hidden}
+        .search-input{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border)}
+        .search-input input{flex:1;border:none;background:none;font-size:1rem;font-family:inherit;color:var(--text);outline:none}
+        .search-results{max-height:300px;overflow-y:auto;padding:8px}
+        .search-item{padding:10px 12px;border-radius:8px;cursor:pointer}
+        .search-item:hover{background:var(--bg)}
+        .search-item h4{font-size:.9rem;margin-bottom:2px}
+        .search-item p{font-size:.8rem;color:var(--text3)}
+        
+        /* Install Modal */
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+        .modal-box{background:var(--card);border-radius:var(--radius);width:100%;max-width:400px;max-height:90vh;overflow-y:auto;position:relative}
+        .modal-close{position:absolute;top:12px;left:12px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:8px;z-index:1}
+        .modal-header{padding:32px 20px;text-align:center;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:var(--radius) var(--radius) 0 0}
+        .modal-header h2{font-size:1.3rem;margin-bottom:4px}
+        .modal-body{padding:20px}
+        .install-step{display:flex;gap:12px;padding:14px;background:var(--bg);border-radius:10px;margin-bottom:10px}
+        .install-step-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--pri),var(--pri2));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:1.2rem}
+        .install-step h4{font-size:.9rem;font-weight:700;margin-bottom:4px}
+        .install-step ol{padding-right:16px;font-size:.8rem;color:var(--text2);line-height:1.7}
+        .install-step li{margin-bottom:2px}
+        
+        /* Filter */
+        .filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+        .filter{padding:6px 16px;border-radius:16px;font-weight:600;font-size:.8rem;color:var(--text2);background:var(--border)}
+        .filter.active{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+        
+        /* Mindmap */
+        .mindmap{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:12px;overflow:hidden}
+        .mindmap-head{padding:14px;background:linear-gradient(135deg,#48bb78,#38a169);color:#fff;display:flex;align-items:center;gap:10px}
+        .mindmap-head svg{width:20px;height:20px}
+        .mindmap-body{padding:16px;text-align:center}
+        .mindmap svg{width:100%;max-width:350px}
+        
+        @media(min-width:768px){
+            .cards{grid-template-columns:repeat(3,1fr)}
+            .quiz-grid{grid-template-columns:repeat(3,1fr)}
+        }
+    </style>
 </head>
 <body>
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="splash-screen">
-        <div class="splash-content">
-            <div class="splash-icon">
-                <svg viewBox="0 0 100 100" class="philosophy-logo">
-                    <defs>
-                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea"/>
-                            <stop offset="100%" style="stop-color:#764ba2"/>
-                        </linearGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="45" fill="url(#logoGrad)" opacity="0.15"/>
-                    <text x="50" y="60" text-anchor="middle" font-size="36" fill="url(#logoGrad)" font-family="serif" font-weight="bold">ف</text>
-                    <path d="M25 75 Q50 85 75 75" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
-                </svg>
-            </div>
-            <h1 class="splash-title">تعلم الفلسفة مع فافا</h1>
-            <p class="splash-subtitle">تطبيق تعليمي شامل للمنهج الجزائري</p>
-            <div class="splash-loader">
-                <div class="loader-bar"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div id="app" class="app hidden">
-        <!-- Header -->
+    <div id="app">
         <header class="header">
-            <div class="header-content">
-                <div class="header-right">
-                    <button class="menu-btn" id="menuBtn" aria-label="القائمة">
-                        <span></span><span></span><span></span>
-                    </button>
-                    <div class="logo">
-                        <svg viewBox="0 0 40 40" class="logo-icon">
-                            <defs>
-                                <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#667eea"/>
-                                    <stop offset="100%" style="stop-color:#764ba2"/>
-                                </linearGradient>
-                            </defs>
-                            <circle cx="20" cy="20" r="18" fill="url(#headerGrad)" opacity="0.15"/>
-                            <text x="20" y="26" text-anchor="middle" font-size="16" fill="url(#headerGrad)" font-family="serif" font-weight="bold">ف</text>
-                        </svg>
-                        <span class="logo-text">فافا</span>
-                    </div>
-                </div>
-                <div class="header-left">
-                    <button class="theme-toggle" id="themeToggle" aria-label="تبديل المظهر">
-                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                        </svg>
-                        <svg class="moon-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                        </svg>
-                    </button>
-                    <button class="search-btn" id="searchBtn" aria-label="بحث">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                        </svg>
-                    </button>
-                </div>
+            <div class="logo">فافا</div>
+            <div class="header-btns">
+                <button class="header-btn" id="searchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+                <button class="header-btn" id="themeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2"/></svg></button>
+                <button class="menu-btn" id="menuBtn"><span></span><span></span><span></span></button>
             </div>
         </header>
-
-        <!-- Sidebar Navigation -->
+        
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <svg viewBox="0 0 60 60" class="sidebar-logo-icon">
-                        <defs>
-                            <linearGradient id="sideGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#667eea"/>
-                                <stop offset="100%" style="stop-color:#764ba2"/>
-                            </linearGradient>
-                        </defs>
-                        <circle cx="30" cy="30" r="28" fill="url(#sideGrad)" opacity="0.15"/>
-                        <text x="30" y="38" text-anchor="middle" font-size="24" fill="url(#sideGrad)" font-family="serif" font-weight="bold">ف</text>
-                    </svg>
-                    <div>
-                        <h2>فافا</h2>
-                        <p>السنة 3 ثانوي</p>
-                    </div>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item active" data-section="home">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    <span>الرئيسية</span>
-                </li>
-                <li class="nav-item" data-section="lessons">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    <span>الدروس</span>
-                </li>
-                <li class="nav-item" data-section="mindmaps">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                    <span>الخرائط الذهنية</span>
-                </li>
-                <li class="nav-item" data-section="exams">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>اختبارات الباك</span>
-                </li>
-                <li class="nav-item" data-section="quiz">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    <span>Quiz</span>
-                </li>
-                <li class="nav-item" data-section="youtube">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-                    <span>يوتيوب</span>
-                </li>
-            </ul>
+            <div class="nav-item active" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>الرئيسية</div>
+            <div class="nav-item" data-s="lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>الدروس</div>
+            <div class="nav-item" data-s="maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>الخرائط</div>
+            <div class="nav-item" data-s="exams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>الباكالوريا</div>
+            <div class="nav-item" data-s="quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg>Quiz</div>
+            <div class="nav-item" data-s="youtube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>يوتيوب</div>
             <div class="sidebar-footer">
-                <button class="sidebar-install-btn" id="sidebarInstallBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span>تنزيل التطبيق</span>
-                </button>
-                <div class="student-info">
-                    <div class="info-badge">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                    </div>
-                    <div>
-                        <p class="info-level">السنة الثالثة ثانوي</p>
-                        <p class="info-stream">شعبة آداب و فلسفة</p>
-                    </div>
-                </div>
+                <button class="install-btn-sidebar" id="installSidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>تنزيل التطبيق</button>
+                <p style="font-size:.8rem;color:var(--text3);text-align:center">السنة 3 ثانوي - آداب و فلسفة</p>
             </div>
         </nav>
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <!-- Search Modal -->
-        <div class="search-modal hidden" id="searchModal">
-            <div class="search-modal-content">
-                <div class="search-input-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                    <input type="text" id="searchInput" placeholder="ابحث عن درس..." autocomplete="off">
-                    <button class="search-close" id="searchClose">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-                <div class="search-results" id="searchResults"></div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <!-- Home Section -->
-            <section class="section active" id="section-home">
-                <div class="hero-section">
-                    <div class="hero-particles" id="particles"></div>
-                    <div class="hero-content">
-                        <h1 class="hero-title">
-                            <span class="title-line">تعلم الفلسفة</span>
-                            <span class="title-line gradient-text">مع فافا</span>
-                        </h1>
-                        <p class="hero-desc">منصة تعليمية شاملة لمادة الفلسفة - السنة الثالثة ثانوي شعبة آداب و فلسفة حسب المنهج الجزائري</p>
-                        <div class="hero-stats">
-                            <div class="stat-item">
-                                <span class="stat-number" data-count="12">0</span>
-                                <span class="stat-label">درس</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number" data-count="60">0</span>
-                                <span class="stat-label">سؤال</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number" data-count="4">0</span>
-                                <span class="stat-label">باكالوريا</span>
-                            </div>
-                        </div>
+        <div class="sidebar-overlay" id="overlay"></div>
+        
+        <main class="main">
+            <section class="section active" id="sec-home">
+                <div class="hero">
+                    <h1>تعلم الفلسفة<span>مع فافا</span></h1>
+                    <p>منصة تعليمية شاملة - المنهج الجزائري</p>
+                    <div class="stats">
+                        <div class="stat"><span class="stat-num" data-c="12">0</span><span class="stat-label">درس</span></div>
+                        <div class="stat"><span class="stat-num" data-c="60">0</span><span class="stat-label">سؤال</span></div>
+                        <div class="stat"><span class="stat-num" data-c="4">0</span><span class="stat-label">باكالوريا</span></div>
                     </div>
                 </div>
-
-                <div class="features-grid">
-                    <div class="feature-card" data-section="lessons">
-                        <div class="feature-icon lessons-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        </div>
-                        <h3>الدروس والملخصات</h3>
-                        <p>ملخصات شاملة لكل درس من المنهج</p>
-                    </div>
-                    <div class="feature-card" data-section="exams">
-                        <div class="feature-icon exam-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        </div>
-                        <h3>اختبارات الباكالوريا</h3>
-                        <p>حلول نموذجية لأسئلة الباكالوريا</p>
-                    </div>
-                    <div class="feature-card" data-section="quiz">
-                        <div class="feature-icon quiz-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg>
-                        </div>
-                        <h3>اختبارات الفهم</h3>
-                        <p>اختبر فهمك لكل درس</p>
-                    </div>
-                    <div class="feature-card" data-section="mindmaps">
-                        <div class="feature-icon mindmap-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>
-                        </div>
-                        <h3>الخرائط الذهنية</h3>
-                        <p>خرائط ذهنية تفاعلية</p>
-                    </div>
-                    <div class="feature-card" data-section="youtube">
-                        <div class="feature-icon youtube-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-                        </div>
-                        <h3>قنوات يوتيوب</h3>
-                        <p>أفضل القنوات التعليمية</p>
-                    </div>
+                <div class="cards">
+                    <div class="card" data-s="lessons"><div class="card-icon c1">📚</div><h3>الدروس</h3><p>ملخصات شاملة</p></div>
+                    <div class="card" data-s="exams"><div class="card-icon c2">📝</div><h3>الباكالوريا</h3><p>حلول نموذجية</p></div>
+                    <div class="card" data-s="quiz"><div class="card-icon c3">❓</div><h3>Quiz</h3><p>اختبر فهمك</p></div>
+                    <div class="card" data-s="maps"><div class="card-icon c4">🧠</div><h3>الخرائط</h3><p>ذهنية تفاعلية</p></div>
+                    <div class="card" data-s="youtube"><div class="card-icon c5">▶️</div><h3>يوتيوب</h3><p>قنوات تعليمية</p></div>
                 </div>
             </section>
-
-            <!-- Lessons Section -->
-            <section class="section" id="section-lessons">
-                <div class="section-header">
-                    <h1 class="section-main-title">الدروس والملخصات</h1>
-                    <p class="section-desc">ملخصات شاملة لكل درس من المنهج</p>
-                </div>
-                <div class="semester-tabs">
-                    <button class="semester-tab active" data-semester="1">الفصل الأول</button>
-                    <button class="semester-tab" data-semester="2">الفصل الثاني</button>
-                </div>
-                <div class="lessons-container" id="lessonsContainer"></div>
+            
+            <section class="section" id="sec-lessons">
+                <div class="sec-head"><h1>الدروس والملخصات</h1><p>حسب المنهج الجزائري</p></div>
+                <div class="tabs"><button class="tab active" data-sem="1">الفصل الأول</button><button class="tab" data-sem="2">الفصل الثاني</button></div>
+                <div id="lessonsList"></div>
             </section>
-
-            <!-- Mind Maps Section -->
-            <section class="section" id="section-mindmaps">
-                <div class="section-header">
-                    <h1 class="section-main-title">الخرائط الذهنية</h1>
-                    <p class="section-desc">خرائط ذهنية تفاعلية لتسهيل المراجعة</p>
-                </div>
-                <div class="mindmaps-container" id="mindmapsContainer"></div>
+            
+            <section class="section" id="sec-maps">
+                <div class="sec-head"><h1>الخرائط الذهنية</h1><p>لتسهيل المراجعة</p></div>
+                <div id="mapsList"></div>
             </section>
-
-            <!-- Exams Section -->
-            <section class="section" id="section-exams">
-                <div class="section-header">
-                    <h1 class="section-main-title">اختبارات الباكالوريا</h1>
-                    <p class="section-desc">حلول نموذجية مفصلة لأسئلة الباكالوريا</p>
-                </div>
-                <div class="exams-filter">
-                    <button class="filter-btn active" data-year="all">الكل</button>
-                    <button class="filter-btn" data-year="2024">2024</button>
-                    <button class="filter-btn" data-year="2023">2023</button>
-                    <button class="filter-btn" data-year="2022">2022</button>
-                    <button class="filter-btn" data-year="2021">2021</button>
-                </div>
-                <div class="exams-container" id="examsContainer"></div>
+            
+            <section class="section" id="sec-exams">
+                <div class="sec-head"><h1>اختبارات الباكالوريا</h1><p>حلول نموذجية مفصلة</p></div>
+                <div class="filters"><button class="filter active" data-y="all">الكل</button><button class="filter" data-y="2024">2024</button><button class="filter" data-y="2023">2023</button><button class="filter" data-y="2022">2022</button><button class="filter" data-y="2021">2021</button></div>
+                <div id="examsList"></div>
             </section>
-
-            <!-- Quiz Section -->
-            <section class="section" id="section-quiz">
-                <div class="section-header">
-                    <h1 class="section-main-title">اختبارات الفهم</h1>
-                    <p class="section-desc">اختبر فهمك لكل درس</p>
-                </div>
-                <div class="quiz-select" id="quizSelect">
-                    <h2>اختر الدرس</h2>
-                    <div class="quiz-lessons-grid" id="quizLessonsGrid"></div>
-                </div>
-                <div class="quiz-area hidden" id="quizArea">
-                    <div class="quiz-header">
-                        <div class="quiz-info">
-                            <span class="quiz-lesson-name" id="quizLessonName"></span>
-                            <span class="quiz-progress" id="quizProgress"></span>
-                        </div>
-                        <div class="quiz-timer" id="quizTimer">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            <span id="timerDisplay">00:00</span>
-                        </div>
-                    </div>
-                    <div class="quiz-question-container" id="quizQuestionContainer"></div>
-                    <div class="quiz-navigation">
-                        <button class="quiz-nav-btn" id="prevQuestion" disabled>السابق</button>
-                        <button class="quiz-nav-btn primary" id="nextQuestion">التالي</button>
-                        <button class="quiz-nav-btn submit hidden" id="submitQuiz">إنهاء</button>
+            
+            <section class="section" id="sec-quiz">
+                <div class="sec-head"><h1>اختبارات الفهم</h1><p>اختبر معلوماتك</p></div>
+                <div id="quizSelect"><div class="quiz-grid" id="quizGrid"></div></div>
+                <div id="quizArea" class="hidden">
+                    <div class="quiz-header"><span class="quiz-info" id="qInfo"></span><span class="quiz-timer" id="qTimer">⏱ 00:00</span></div>
+                    <div id="qContainer"></div>
+                    <div class="quiz-nav">
+                        <button class="quiz-btn" id="qPrev" disabled>السابق</button>
+                        <button class="quiz-btn primary" id="qNext">التالي</button>
+                        <button class="quiz-btn primary hidden" id="qSubmit">إنهاء</button>
                     </div>
                 </div>
-                <div class="quiz-result hidden" id="quizResult">
-                    <div class="result-card">
-                        <div class="result-circle">
-                            <svg viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="54" fill="none" stroke="#e0e0e0" stroke-width="8"/>
-                                <circle cx="60" cy="60" r="54" fill="none" stroke="url(#resultGrad)" stroke-width="8" stroke-dasharray="339.292" stroke-dashoffset="339.292" stroke-linecap="round" transform="rotate(-90 60 60)" id="resultCircle"/>
-                                <defs><linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea"/><stop offset="100%" style="stop-color:#764ba2"/></linearGradient></defs>
-                            </svg>
-                            <span class="result-score" id="resultScore">0%</span>
-                        </div>
-                        <h2 class="result-title" id="resultTitle"></h2>
-                        <p class="result-desc" id="resultDesc"></p>
-                        <div class="result-stats">
-                            <div class="result-stat correct"><span id="correctCount">0</span> صحيحة</div>
-                            <div class="result-stat wrong"><span id="wrongCount">0</span> خاطئة</div>
-                        </div>
-                        <div class="result-actions">
-                            <button class="result-btn primary" id="retryQuiz">إعادة</button>
-                            <button class="result-btn" id="viewAnswers">الإجابات</button>
-                        </div>
-                    </div>
-                </div>
+                <div id="quizResult" class="hidden"></div>
             </section>
-
-            <!-- YouTube Section -->
-            <section class="section" id="section-youtube">
-                <div class="section-header">
-                    <h1 class="section-main-title">قنوات يوتيوب</h1>
-                    <p class="section-desc">أفضل القنوات التعليمية للفلسفة</p>
-                </div>
-                <div class="youtube-container" id="youtubeContainer"></div>
+            
+            <section class="section" id="sec-youtube">
+                <div class="sec-head"><h1>قنوات يوتيوب</h1><p>أفضل القنوات التعليمية</p></div>
+                <div id="ytList"></div>
             </section>
         </main>
-
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav" id="bottomNav">
-            <button class="bottom-nav-item active" data-section="home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                <span>الرئيسية</span>
-            </button>
-            <button class="bottom-nav-item" data-section="lessons">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <span>الدروس</span>
-            </button>
-            <button class="bottom-nav-item" data-section="quiz">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg>
-                <span>Quiz</span>
-            </button>
-            <button class="bottom-nav-item" data-section="exams">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>الباك</span>
-            </button>
-            <button class="bottom-nav-item" data-section="youtube">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-                <span>يوتيوب</span>
-            </button>
+        
+        <nav class="bottom-nav">
+            <button class="bottom-btn active" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>الرئيسية</button>
+            <button class="bottom-btn" data-s="lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>الدروس</button>
+            <button class="bottom-btn" data-s="quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1"/></svg>Quiz</button>
+            <button class="bottom-btn" data-s="exams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>الباك</button>
+            <button class="bottom-btn" data-s="youtube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9.75 15.02 15.5 11.75 9.75 8.48"/></svg>يوتيوب</button>
         </nav>
     </div>
-
-    <!-- Install Modal -->
-    <div class="install-modal hidden" id="installModal">
-        <div class="install-modal-content">
-            <button class="install-modal-close" id="installModalClose">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <div class="install-modal-header">
-                <div class="install-modal-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                </div>
-                <h2>تنزيل التطبيق</h2>
-                <p>تعلم الفلسفة مع فافا</p>
+    
+    <div class="search-modal hidden" id="searchModal">
+        <div class="search-box">
+            <div class="search-input">
+                <input type="text" id="searchInput" placeholder="ابحث عن درس...">
+                <button onclick="app.closeSearch()">✕</button>
             </div>
-            <div class="install-modal-body">
-                <div class="install-method">
-                    <div class="install-method-icon">📱</div>
-                    <div class="install-method-info">
-                        <h3>أندرويد</h3>
-                        <ol>
-                            <li>افتح الموقع في Chrome</li>
-                            <li>اضغط على النقاط الثلاث</li>
-                            <li>اختر "إضافة إلى الشاشة الرئيسية"</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="install-method">
-                    <div class="install-method-icon">🍎</div>
-                    <div class="install-method-info">
-                        <h3>آيفون</h3>
-                        <ol>
-                            <li>افتح الموقع في Safari</li>
-                            <li>اضغط على زر المشاركة</li>
-                            <li>اختر "إضافة إلى الشاشة الرئيسية"</li>
-                        </ol>
-                    </div>
-                </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+    
+    <div class="modal hidden" id="installModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="app.closeInstall()">✕</button>
+            <div class="modal-header">
+                <h2>تنزيل التطبيق</h2>
+                <p>فافا - تعليم الفلسفة</p>
+            </div>
+            <div class="modal-body">
+                <div class="install-step"><div class="install-step-icon">📱</div><div><h4>أندرويد</h4><ol><li>افتح الموقع في Chrome</li><li>اضغط النقاط الثلاث ⋮</li><li>اختر "إضافة للشاشة الرئيسية"</li></ol></div></div>
+                <div class="install-step"><div class="install-step-icon">🍎</div><div><h4>آيفون</h4><ol><li>افتح الموقع في Safari</li><li>اضغط زر المشاركة ↗</li><li>اختر "إضافة للشاشة الرئيسية"</li></ol></div></div>
             </div>
         </div>
     </div>
-
-    <!-- Toast -->
-    <div class="toast hidden" id="toast">
-        <span class="toast-message" id="toastMessage"></span>
-    </div>
-
+    
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
 </body>
